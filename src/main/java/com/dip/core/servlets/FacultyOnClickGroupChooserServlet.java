@@ -16,7 +16,8 @@ import java.util.List;
 /**
  * Created by Юрий on 30.10.2016.
  */
-@WebServlet("/returnGroups")
+//@WebServlet("/returnGroups")
+@Deprecated
 public class FacultyOnClickGroupChooserServlet extends HttpServlet {
     private static final String _URL = "../jsps/teacher2page.jsp";
 

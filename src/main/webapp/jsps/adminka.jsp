@@ -34,7 +34,7 @@
         <div class="col-xs-6">
             <h2 style="margin-bottom: 20px;">Не авторизованные</h2>
             <div class="list-group">
-                <form action="/teacherAgree" method="post" id="example_group2">
+                <form action="/teacher_authtorize" method="post" id="example_group2">
                     <% for (Teacher teacher : (List<Teacher>) new TeachersService().getListOfNotAgreedTeachers()) {%>
                     <div class="checkbox">
                         <label>

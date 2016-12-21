@@ -19,12 +19,13 @@ import java.sql.SQLException;
 import java.util.*;
 
 /**
- * Created by a.talismanov on 07.07.2016.
+ * @author a.talismanov on 07.07.2016.
  */
 public class MailSender {
 
     private static final String SELECT_EMAIL_BY_FIO_SQL = "SELECT E_MAIL FROM STUDENTS WHERE STUDENT_FIO = ?";
     private static final String STUDENTS_GROUP = "ГРУППА 1";
+    //TODO CHANGE
     private static final String EMAIL_LOGIN = "login@yandex.ru";
     private static final String EMAIL_PASSWORD = "password";
 
@@ -36,16 +37,27 @@ public class MailSender {
         try {
             for (String fio : new StudentService().getStudentListByName(STUDENTS_GROUP)) {
                 Connection connection = JdbcHelper.getConnection();
-                try {
-                    PreparedStatement preparedStatement = connection.prepareStatement(SELECT_EMAIL_BY_FIO_SQL);
+                ResultSet resultSet = null;
+                try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_EMAIL_BY_FIO_SQL)){
                     preparedStatement.setString(1, fio);
-                    ResultSet resultSet = preparedStatement.executeQuery();
+                    resultSet = preparedStatement.executeQuery();
                     if (resultSet.next()) {
                         String email = resultSet.getString(1);
-                        sendMessageToEmail(session, email, body, header);
+                        //убрать потом
+                        if ("talismanoff1990@yandex.ru".equals(email)) {
+                            sendMessageToEmail(session, email, body, header);
+                        }
                     }
                 } catch (SQLException SQLe) {
                     System.out.println(SQLe.getMessage());
+                } finally {
+                    try {
+                        if (resultSet != null) {
+                            resultSet.close();
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             System.out.println("done sending");
@@ -57,10 +69,9 @@ public class MailSender {
     private static void sendMessageToEmail(Session session, String emailTo, String text, String header) throws MessagingException {
         MimeMessage message = new MimeMessage(session);
         setMessage(message, emailTo, header);
-        String textOfMessage = text; //getMessageString();
         String encodedText = null;
         try {
-            encodedText = new String (textOfMessage.getBytes("UTF-8"),"UTF-8");
+            encodedText = new String (text.getBytes("UTF-8"),"UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -93,7 +104,7 @@ public class MailSender {
         message.setSubject(newHeader, "UTF-8");
     }
 
-    static Properties getProperties() {
+    private static Properties getProperties() {
         Properties props = new Properties();
         String smtphost = getSmtpHostByMail();
 

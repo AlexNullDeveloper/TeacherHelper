@@ -6,7 +6,10 @@
   <display-name>Archetype Created Web Application</display-name>
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>/WEB-INF/applicationContext.xml</param-value>
+    <param-value>
+      /WEB-INF/applicationContext.xml
+      <!--classpath:com/dip/core/contexts/ApplicationContext.xml-->
+    </param-value>
   </context-param>
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>

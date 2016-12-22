@@ -29,6 +29,13 @@
 
     <bean class="org.springframework.web.servlet.view.tiles2.TilesViewResolver"/>
 
+    <bean id="facultiesService" class="com.dip.core.service.FacultiesService"> </bean>
+    <bean id="groupsService" class="com.dip.core.service.GroupsService"> </bean>
+    <bean id="studentsService" class="com.dip.core.service.StudentService"> </bean>
+    <bean id="teachersService" class="com.dip.core.service.TeachersService"> </bean>
+    <bean id="usersService" class="com.dip.core.service.UsersService"> </bean>
+
+
     <!--<bean class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">-->
         <!--<property name="definitions">-->
             <!--<list>-->

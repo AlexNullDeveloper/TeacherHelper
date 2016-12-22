@@ -7,28 +7,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-/**
- * Created by Юрий on 20.12.2016.
- */
 @Controller
 public class AuthController {
 
-    //TODO сделать
-//    @Autowired
-//    private UsersService usersService;
-//
-//    public void setUsersService(UsersService usersService) {
-//        this.usersService = usersService;
-//    }
+    private UsersService usersService;
+
+    @Autowired
+    public void setUsersService(UsersService usersService) {
+        this.usersService = usersService;
+    }
 
     @RequestMapping(value = "/auth", method = {RequestMethod.GET, RequestMethod.POST})
-    public String perform(@RequestParam("username") String username, @RequestParam("password") String password) {
+    public String perform(@RequestParam("username")  String username, @RequestParam("password") String password) {
 
-        UsersService usersService = new UsersService();
         boolean isPasswordCorrect = usersService.checkPasswordCorrectness(username, password);
 
         if (isPasswordCorrect) {
-
             boolean isAdmin = usersService.isAdmin(username);
 
             if (isAdmin) {
@@ -40,5 +34,4 @@ public class AuthController {
             return "errorlogin";
         }
     }
-
 }

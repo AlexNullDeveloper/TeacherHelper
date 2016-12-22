@@ -1,8 +1,7 @@
 <%@ page import="com.dip.core.pojos.Faculty" %>
 <%@ page import="com.dip.core.service.FacultiesService" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.dip.core.service.GroupsService" %>
-<%@ page import="com.dip.core.service.StudentService" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: Юрий
   Date: 29.10.2016
@@ -22,30 +21,22 @@
     <div class="row">
         <div class="col-md-4">
             <h2 style="margin-bottom: 20px;">Факультет</h2>
-            <div class="list-group">
-
+            <div class="list-faculty">
                 <% for (Faculty faculty : (List<Faculty>) new FacultiesService().getListOfFaculties()) {%>
-                <button type="button" data-name="<%=faculty.getName()%>" class="list-group-item button-list"><%=faculty.getVuz() + " " + faculty.getName()%></button>
+                <button type="button" data-name="<%=faculty.getName()%>" class="list-group-item faculty-list"><%=faculty.getVuz() + " " + faculty.getName()%></button>
                 <%}%>
             </div>
         </div>
         <div class="col-md-4">
             <h2 style="margin-bottom: 20px;">Список групп</h2>
             <div class="list-group">
-                <% for (String str : new GroupsService().getListOfGroupsByFacName("ИУ") ) { %>
-                    <button type="button" class="list-group-item"><%= str%></button>
-                <%}%>
+
             </div>
         </div>
         <div class="col-md-4">
             <h2 style="margin-bottom: 20px;">Список учащихся</h2>
-            <div class="list-group">
+            <div class="list-students">
 
-                <% for (String str : new StudentService().getStudentListByName("ГРУППА 1")) {%>
-                <button class="list-group-item">
-                   <%= str%>
-                </button>
-                <% } %>
             </div>
             <form action="/sendMessage" method="post">
                 <input type="text" name="messageHeader" class="form-control" placeholder="Заголовок письма">

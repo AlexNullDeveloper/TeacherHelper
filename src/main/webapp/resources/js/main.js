@@ -1,6 +1,5 @@
 $(document).ready(function () {
 
-
     function insertParam(url, param, value) {
         var a = document.createElement('a'), regex = /(?:\?|&amp;|&)+([^=]+)(?:=([^&]*))*/g;
         var match, str = []; a.href = url; param = encodeURIComponent(param);
@@ -11,49 +10,82 @@ $(document).ready(function () {
         return a.href;
     }
 
-    function getParameterByName(name, url) {
-        if (!url) {
-            url = window.location.href;
-        }
-        name = name.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-            results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
-    }
-
     var name = "";
-    $(this).on('click', ".button-list", function () {
+    $(this).on('click', ".group-list", function () {
         var name = $(this).data("name");
-        alert (name);
-
+        var results;
         $.ajax({
-            url: "/returnGroups?name=" + name
+            url: "/returnStudents?name=" + name,
+            result: results,
+            dataType: "json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+
+            },
+            success: function(data)
+            {
+                // alert("success");
+                console.log("success")
+            },
+            error: function (request, status, error) {
+                alert("error");
+                console.log(error);
+            }
         }).done(function(result) {
-            var data = JSON.parse(result);
+            console.log("done");
+            alert.log
+            console.log(result);
 
-
-
-
-            console.log(data);
-            console.log(data.url);
-            console.log(data.Groups);
-
-            var url = data.url;
-
-            var new_url = url + insertParam(url, "previousFaculty", data.previousFaculty);
-            for (var i = 0; i < data.Groups.length; i++) {
-                new_url = new_url + insertParam(url, i, data.Groups[i]);
+            var html = "";
+            for (var i = 0; i < result.length; i++) {
+                console.log("i = " + i);
+                console.log(result[i]);
+                html += "<button class=\"list-group-item\">" + result[i] + "</button>";
             }
 
-            console.log("new_url" + new_url)
-            //window.location.href = new_url;
-            //window.location.href = result;
-            // var all = JSON.parse(result.response.text);
-            // console.log (all);
-            // var groups = JSON.parse();
-            // $( this ).addClass( "done" );
+            document.getElementsByClassName("list-students")[0].innerHTML = html;
+
+        }).fail(function(e) {
+            console.log(e);
+        });
+
+    });
+
+
+    $(this).on('click', ".faculty-list", function () {
+        var name = $(this).data("name");
+        var results;
+
+        $.ajax({
+            url: "/returnGroups?name=" + name,
+            result: results,
+            dataType: "json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+
+            },
+            success: function(data)
+            {
+                // alert("success");
+                console.log("success")
+            },
+            error: function (request, status, error) {
+                alert("error");
+                console.log(error);
+            }
+        }).done(function(result) {
+            console.log(result);
+
+            var html = "";
+            for (var i = 0; i < result.length; i++) {
+                console.log("i = " + i);
+                console.log(result[i]);
+                html += "<button type=\"button\" data-name=\"" + result[i] + "\"class=\"list-group-item group-list\">" + result[i] + "</button>";
+            }
+
+            document.getElementsByClassName("list-group")[0].innerHTML = html;
         }).fail(function(e) {
             console.log(e);
         });
@@ -69,7 +101,6 @@ $(document).ready(function () {
             url: "/submit?name_group=" + name_group
         }).done(function(result) {
             console.log(result);
-            // $( this ).addClass( "done" );
         }).fail(function(e) {
             console.log(e);
         });
